@@ -16,7 +16,7 @@ export class RouteWithSearchParams<
     return this.searchParams;
   }
 
-  getLinkWithSearchParams(
+  createLinkWithSearchParams(
     params: RouteParams<T>,
     searchParams: Partial<SearchParams<P>>,
   ) {

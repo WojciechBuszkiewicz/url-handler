@@ -8,7 +8,7 @@ describe("RouteWithSearchParams.test", () => {
     );
 
     expect(
-      routeWithSearchParams.getLinkWithSearchParams(
+      routeWithSearchParams.createLinkWithSearchParams(
         {
           lang: "en",
           "organization-id": "organization-1",
