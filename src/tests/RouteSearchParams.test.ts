@@ -2,16 +2,21 @@ import { RouteSearchParams } from "../RouteSearchParams";
 
 describe("RouteSearchParams", () => {
   it("should create a query string from an object", () => {
-    const searchParams = new RouteSearchParams(
-      "page=number&category=category-1,category-2&search=string",
-    );
+    const searchParams = new RouteSearchParams({
+      page: "number",
+      category: ["category-1", "category-2"],
+      search: "string",
+    });
 
     expect(searchParams.createSearchParams({ page: 5 })).toBe("page=5");
     expect(searchParams.createSearchParams({ search: "test" })).toBe(
       "search=test",
     );
     expect(
-      searchParams.createSearchParams({ page: 5, category: "category-1" }),
+      searchParams.createSearchParams({
+        page: 5,
+        category: "category-1",
+      }),
     ).toBe("page=5&category=category-1");
     expect(searchParams.createSearchParams({ page: 5, search: "test" })).toBe(
       "page=5&search=test",
@@ -26,17 +31,21 @@ describe("RouteSearchParams", () => {
   });
 
   it("should return passed query key", () => {
-    const searchParams = new RouteSearchParams(
-      "page=number&category=category-1,category-2&search=string",
-    );
+    const searchParams = new RouteSearchParams({
+      page: "number",
+      category: ["category-1", "category-2"],
+      search: "string",
+    });
 
     expect(searchParams.getSearchParamKey("category")).toBe("category");
   });
 
   it("should parse queries from a string to an object", () => {
-    const searchParams = new RouteSearchParams(
-      "page=number&category=category-1,category-2&search=string",
-    );
+    const searchParams = new RouteSearchParams({
+      page: "number",
+      category: ["category-1", "category-2"],
+      search: "string",
+    });
 
     expect(
       searchParams.parseSearchParamsFromString(
@@ -49,9 +58,11 @@ describe("RouteSearchParams", () => {
   });
 
   it("should replace old queries with new ones", () => {
-    const searchParams = new RouteSearchParams(
-      "page=number&category=category-1,category-2&search=string",
-    );
+    const searchParams = new RouteSearchParams({
+      page: "number",
+      category: ["category-1", "category-2"],
+      search: "string",
+    });
 
     expect(
       searchParams.repalceSearchParams(

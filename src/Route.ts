@@ -1,25 +1,17 @@
-type MergeIfNotUndefined<
-  Value,
-  ValueToMerge extends string,
-> = Value extends Record<infer P, string>
-  ? Record<P | ValueToMerge, string>
-  : Record<ValueToMerge, string>;
+type LinkSplit<T extends string> = T extends `${infer Slug}/${infer RestLink}`
+  ? [Slug, ...LinkSplit<RestLink>]
+  : [T];
 
-export type RouteParams<
-  T extends string,
-  Params = undefined,
-> = T extends `/:${infer A}/${infer B}`
-  ? RouteParams<`/${B}`, MergeIfNotUndefined<Params, A>>
-  : T extends `/:${infer C}`
-  ? MergeIfNotUndefined<Params, C>
-  : T extends `/${string}/${infer D}`
-  ? RouteParams<`/${D}`, Params>
-  : Params;
+type LinkParams<T extends string> = T extends `:${infer P}` ? P : never;
+
+export type LinkParamsData<T extends string> = {
+  [A in LinkParams<LinkSplit<T>[number]>]: string;
+};
 
 export class Route<T extends `/${string}`> {
   constructor(private readonly path: T) {}
 
-  createLink(params: RouteParams<T>) {
+  createLink(params: LinkParamsData<T>) {
     if (!params) {
       return this.path;
     }
@@ -54,9 +46,5 @@ export class Route<T extends `/${string}`> {
       }
       return false;
     });
-  }
-
-  createSublink<P extends `/${string}`>(subPath: P): `${T}${P}` {
-    return `${this.path}${subPath}`;
   }
 }

@@ -1,9 +1,13 @@
-import { Route, type RouteParams } from "./Route";
-import { RouteSearchParams, type SearchParams } from "./RouteSearchParams";
+import { type LinkParamsData, Route } from "./Route";
+import {
+  RouteSearchParams,
+  type SerachParams,
+  type ParseSearchParams,
+} from "./RouteSearchParams";
 
 export class RouteWithSearchParams<
   T extends `/${string}`,
-  P extends string,
+  const P extends SerachParams,
 > extends Route<T> {
   searchParams;
 
@@ -17,8 +21,8 @@ export class RouteWithSearchParams<
   }
 
   createLinkWithSearchParams(
-    params: RouteParams<T>,
-    searchParams: Partial<SearchParams<P>>,
+    params: LinkParamsData<T>,
+    searchParams: Partial<ParseSearchParams<P>>,
   ) {
     return `${this.createLink(params)}?${this.searchParams.createSearchParams(
       searchParams,
